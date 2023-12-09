@@ -27,37 +27,37 @@ class train_val():
 
              # validating column length in the file
             self.raw_data.validateColumnLength(noofcolumns)
-            logging.log(self.file_object, "Raw Data Validation Complete!!")
+            logging.info("Raw Data Validation Complete!!")
 
-            logging.log(self.file_object, "Starting Data Transforamtion!!")
+            logging.info("Starting Data Transforamtion!!")
 
              # replacing blanks in the csv file with "Null" values to insert in table
             self.dataTransform.replaceMissingWithNull()
 
-            logging.log("Data transformation completed")
+            logging.info("Data transformation completed")
             
-            logging.log("Creating Training_Database and tables on the basis of given schema!!!")
+            logging.info("Creating Training_Database and tables on the basis of given schema!!!")
 
             # create database with given name, if present open the connection! Create table with columns given in schema
             self.dBOperation.createTableDb('Training', column_names)
-            logging.log("Table creation Completed!!")
-            logging.log("Insertion of Data into Table started!!!!")
+            logging.info("Table creation Completed!!")
+            logging.info("Insertion of Data into Table started!!!!")
 
             # insert csv files in the table
             self.dBOperation.insertIntoTableGoodData('Training')
-            logging.log("Insertion in Table completed!!!")
-            logging.log("Deleting Good Data Folder!!!")
+            logging.info("Insertion in Table completed!!!")
+            logging.info("Deleting Good Data Folder!!!")
 
             # Delete the good data folder after loading files in table
             self.raw_data.deleteExistingGoodDataTrainingFolder()
-            logging.log("Good_Data folder deleted!!!")
-            logging.log("Moving bad files to Archive and deleting Bad_Data folder!!!")
+            logging.info("Good_Data folder deleted!!!")
+            logging.info("Moving bad files to Archive and deleting Bad_Data folder!!!")
 
             # Move the bad files to archive folder
             self.raw_data.moveBadFilesToArchiveBad()
-            logging.log("Bad files moved to archive!! Bad folder Deleted!!")
-            logging.log("Validation Operation completed!!")
-            logging.log("Extracting csv file from table")
+            logging.info("Bad files moved to archive!! Bad folder Deleted!!")
+            logging.info("Validation Operation completed!!")
+            logging.info("Extracting csv file from table")
 
             # export data in table to csvfile
             self.dBOperation.selectingDatafromtableintocsv('Training')

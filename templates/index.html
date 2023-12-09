@@ -160,7 +160,7 @@
 						<li class="list-inline-item">&sdot;</li>
 						<li class="list-inline-item"><a href="https://ineuron.ai/privacy.html">Privacy Policy</a></li>
 					</ul>
-					<p class="text-muted small mb-2 mb-lg-0">&copy; iNeuron.ai 2020. All Rights Reserved.</p>
+					<p class="text-muted small mb-2 mb-lg-0">&copy; amin 2023. All Rights Reserved.</p>
 				</div>
 			</div>
 		</div>
@@ -191,15 +191,19 @@
 				});
 			});
 			$("#defaultfile").click(function(e){
+				console.log(e,'(((((((((((((())))))))))))))')
 				e.preventDefault();
 				$('#loading').show();
 				var path = $(this).attr("data-path");
+				console.log(path,'************')
 				$.ajax({
 					//change url below
-					url : "/predict",
+					url : "/train",
 					type: "POST",
 					data: {filepath:path},
 					success: function(response){
+						console.log(response,'^^^^^^^^^^^^^^^^^^^^^^^')
+						alert('test')
 						$(".json-result").html('<p>"Prediction File created !!!</p><pre>' + response + '</pre>');
 						$('#loading').hide();
 					}

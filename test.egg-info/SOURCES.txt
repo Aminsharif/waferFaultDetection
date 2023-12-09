@@ -6,8 +6,14 @@ src/logger.py
 src/utils.py
 src/component/__init__.py
 src/component/data_ingestion.py
+src/component/data_loader.py
 src/component/data_transformation.py
 src/component/model_trainer.py
+src/data_preprocessing/__init__.py
+src/data_preprocessing/clustering.py
+src/data_preprocessing/preprocessing.py
+src/file_operations/__init__.py
+src/file_operations/file_methods.py
 src/pipeline/__init__.py
 src/pipeline/prediction_pipeline.py
 src/pipeline/training_pipeline.py

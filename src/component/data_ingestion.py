@@ -40,9 +40,9 @@ class dBOperation:
             conn = sqlite3.connect(self.path+DatabaseName+'.db')
 
             
-            logging.log("Opened %s database successfully")
+            logging.info("Opened %s database successfully")
         except ConnectionError as e:
-            logging.log("Error while connecting to database")
+            logging.info("Error while connecting to database")
             raise CustomException(e, sys)
         return conn
     
@@ -65,9 +65,9 @@ class dBOperation:
             if c.fetchone()[0] ==1:
                 conn.close()
                 
-                logging.log("Tables created successfully!!")
+                logging.info("Tables created successfully!!")
 
-                logging.log( "Closed %s database successfully")
+                logging.info( "Closed %s database successfully")
             else:
 
                 for key in column_names.keys():
@@ -83,14 +83,14 @@ class dBOperation:
 
 
                 conn.close()
-                logging.log("Tables created successfully!!")
-                logging.log("Closed database successfully")
+                logging.info("Tables created successfully!!")
+                logging.info("Closed database successfully")
                 
 
         except Exception as e:
-            logging.log( "Error while creating table ")
+            logging.info( "Error while creating table ")
             conn.close()
-            logging.log("Closed database successfully")
+            logging.info("Closed database successfully")
             raise CustomException(e, sys)
 
     def insertIntoTableGoodData(self,Database):
@@ -122,7 +122,7 @@ class dBOperation:
                         for list_ in (line[1]):
                             try:
                                 conn.execute('INSERT INTO Good_Raw_Data values ({values})'.format(values=(list_)))
-                                logging.log(" %s: File loaded successfully!!")
+                                logging.info(" %s: File loaded successfully!!")
                                 conn.commit()
                             except Exception as e:
                                 raise CustomException(e, sys)
@@ -130,10 +130,11 @@ class dBOperation:
             except Exception as e:
 
                 conn.rollback()
-                logging.log("Error while creating table")
+                logging.info("Error while creating table")
                 shutil.move(goodFilePath+'/' + file, badFilePath)
-                logging.log( "File Moved Successfully")
+                logging.info( "File Moved Successfully")
                 conn.close()
+                raise CustomException(e, sys)
 
         conn.close()
     
@@ -178,10 +179,10 @@ class dBOperation:
             csvFile.writerow(headers)
             csvFile.writerows(results)
 
-            logging.log("File exported successfully!!!")
+            logging.info("File exported successfully!!!")
             
         except Exception as e:
-            logging.log("File exporting failed. Error")
+            logging.info("File exporting failed. Error")
             raise CustomException(e, sys) 
 
     def moveBadFilesToArchiveBad(self):
@@ -217,13 +218,13 @@ class dBOperation:
                 for f in files:
                     if f not in os.listdir(dest):
                         shutil.move(source + f, dest)
-                logging.log("Bad files moved to archive")
+                logging.info("Bad files moved to archive")
                 path = 'Training_Raw_files_validated/'
                 if os.path.isdir(path + 'Bad_Raw/'):
                     shutil.rmtree(path + 'Bad_Raw/')
-                logging.log("Bad Raw Data Folder Deleted successfully!!")
+                logging.info("Bad Raw Data Folder Deleted successfully!!")
                 
         except Exception as e:
-            logging.log("Error while moving bad files to archive:")
+            logging.info("Error while moving bad files to archive:")
             raise CustomException(e, sys)  
 

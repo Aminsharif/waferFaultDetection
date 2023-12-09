@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from kneed import KneeLocator
-from file_operations import file_methods
+from src.file_operations import file_methods
 from src.logger import logging
 from src.exception import CustomException
 import sys
@@ -31,7 +31,7 @@ class KMeansClustering:
                         Revisions: None
 
                 """
-        logging.log('Entered the elbow_plot method of the KMeansClustering class')
+        logging.info('Entered the elbow_plot method of the KMeansClustering class')
         wcss=[] # initializing an empty list
         try:
             for i in range (1,11):
@@ -46,12 +46,12 @@ class KMeansClustering:
             plt.savefig('preprocessing_data/K-Means_Elbow.PNG') # saving the elbow plot locally
             # finding the value of the optimum cluster programmatically
             self.kn = KneeLocator(range(1, 11), wcss, curve='convex', direction='decreasing')
-            logging.log('The optimum number of clusters is: '+str(self.kn.knee)+' . Exited the elbow_plot method of the KMeansClustering class')
+            logging.info('The optimum number of clusters is: '+str(self.kn.knee)+' . Exited the elbow_plot method of the KMeansClustering class')
             return self.kn.knee
 
         except Exception as e:
-            logging.log('Exception occured in elbow_plot method of the KMeansClustering class. Exception message:  ' + str(e))
-            logging.log('Finding the number of clusters failed. Exited the elbow_plot method of the KMeansClustering class')
+            logging.info('Exception occured in elbow_plot method of the KMeansClustering class. Exception message:  ' + str(e))
+            logging.info('Finding the number of clusters failed. Exited the elbow_plot method of the KMeansClustering class')
             raise CustomException(e, sys)
 
     def create_clusters(self,data,number_of_clusters):
@@ -66,7 +66,7 @@ class KMeansClustering:
                                 Revisions: None
 
                         """
-        logging.log( 'Entered the create_clusters method of the KMeansClustering class')
+        logging.info( 'Entered the create_clusters method of the KMeansClustering class')
         self.data=data
         try:
             self.kmeans = KMeans(n_clusters=number_of_clusters, init='k-means++', random_state=42)
@@ -78,9 +78,9 @@ class KMeansClustering:
                                                                                     # passing 'Model' as the functions need three parameters
 
             self.data['Cluster']=self.y_kmeans  # create a new column in dataset for storing the cluster information
-            logging.log( 'succesfully created '+str(self.kn.knee)+ 'clusters. Exited the create_clusters method of the KMeansClustering class')
+            logging.info( 'succesfully created '+str(self.kn.knee)+ 'clusters. Exited the create_clusters method of the KMeansClustering class')
             return self.data
         except Exception as e:
-            logging.log('Exception occured in create_clusters method of the KMeansClustering class. Exception message:  ' + str(e))
-            logging.log('Fitting the data to clusters failed. Exited the create_clusters method of the KMeansClustering class')
+            logging.info('Exception occured in create_clusters method of the KMeansClustering class. Exception message:  ' + str(e))
+            logging.info('Fitting the data to clusters failed. Exited the create_clusters method of the KMeansClustering class')
             raise CustomException(e, sys)

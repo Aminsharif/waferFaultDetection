@@ -40,10 +40,10 @@ class dataTransform:
                     csv.fillna('NULL',inplace=True)
                     # #csv.update("'"+ csv['Wafer'] +"'")
                     # csv.update(csv['Wafer'].astype(str))
-                    csv['Wafer'] = csv['Wafer'].str[6:]
+                    csv['Wafer'] = csv['Unnamed: 0'].str[6:]
                     csv.to_csv(self.goodDataPath+ "/" + file, index=None, header=True)
-                    logging.log("File Transformed successfully!!")
+                    logging.info("File Transformed successfully!!")
                #log_file.write("Current Date :: %s" %date +"\t" + "Current time:: %s" % current_time + "\t \t" +  + "\n")
           except Exception as e:
-               logging.log("Data Transformation failed because:")
+               logging.info("Data Transformation failed because:")
                raise CustomException(e, sys)

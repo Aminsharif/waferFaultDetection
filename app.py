@@ -3,11 +3,13 @@ from flask import Flask, request, render_template
 from flask import Response
 import os
 from flask_cors import CORS, cross_origin
-from prediction_Validation_Insertion import pred_validation
-from trainingModel import trainModel
+# from prediction_Validation_Insertion import pred_validation
+# from trainingModel import trainModel
 import flask_monitoringdashboard as dashboard
-from predictFromModel import prediction
+# from predictFromModel import prediction
 import json
+from src.pipeline import training_pipeline
+from src.logger import logging
 
 from src import utils
 
@@ -29,16 +31,14 @@ def home():
 def trainRouteClient():
 
     try:
-        if request.json['folderPath'] is not None:
-            path = request.json['folderPath']
-
-            tp = utils.train_val()
-
+        if request.form is not None:
+            path = request.form['filepath']
+         
             train_valObj = utils.train_val(path) #object initialization
-            train_valObj.validation(path)    #calling the training_validation function
+            train_valObj.validation()    #calling the training_validation function
 
 
-            trainModelObj = trainModel() #object initialization
+            trainModelObj = training_pipeline.trainModel() #object initialization
             trainModelObj.trainingModel() #training the model for the files in the table
 
 
@@ -51,8 +51,9 @@ def trainRouteClient():
         return Response("Error Occurred! %s" % KeyError)
 
     except Exception as e:
-
+        logging.info(e,'error occured')
         return Response("Error Occurred! %s" % e)
+    
     return Response("Training successfull!!")
 
 

@@ -10,10 +10,9 @@ Revisions: None
 
 # Doing the necessary imports
 from sklearn.model_selection import train_test_split
-from data_preprocessing import preprocessing
-from data_preprocessing import clustering
+from src.data_preprocessing import clustering
 from src.component.model_trainer import Model_Finder
-from file_operations import file_methods
+from src.file_operations import file_methods
 from src.logger import logging
 from src.exception import CustomException
 from src.component.data_loader import Data_Getter
@@ -28,7 +27,7 @@ class trainModel:
 
     def trainingModel(self):
          # Logging the start of Training
-        logging.log('Start of Training')
+        logging.info('Start of Training')
 
         try:
             # Getting the data from the source
@@ -96,10 +95,10 @@ class trainModel:
                 save_model=file_op.save_model(best_model,best_model_name+str(i))
 
             # logging the successful Training
-            logging.log('Successful End of Training')
+            logging.info('Successful End of Training')
             
 
         except Exception as e:
             # logging the unsuccessful Training
-            logging.log('Unsuccessful End of Training')
+            logging.info('Unsuccessful End of Training')
             raise CustomException(e, sys)

@@ -32,7 +32,7 @@ class Model_Finder:
                                 Revisions: None
 
                         """
-        logging.log('Entered the get_best_params_for_random_forest method of the Model_Finder class')
+        logging.info('Entered the get_best_params_for_random_forest method of the Model_Finder class')
         try:
             # initializing with different combination of parameters
             self.param_grid = {"n_estimators": [10, 50, 100, 130], "criterion": ['gini', 'entropy'],
@@ -54,14 +54,14 @@ class Model_Finder:
                                               max_depth=self.max_depth, max_features=self.max_features)
             # training the mew model
             self.clf.fit(train_x, train_y)
-            logging.log(
+            logging.info(
                                    'Random Forest best params: '+str(self.grid.best_params_)+'. Exited the get_best_params_for_random_forest method of the Model_Finder class')
 
             return self.clf
         except Exception as e:
-            logging.log( 'Exception occured in get_best_params_for_random_forest method of the Model_Finder class. Exception message:  ' + str(
+            logging.info( 'Exception occured in get_best_params_for_random_forest method of the Model_Finder class. Exception message:  ' + str(
                                        e))
-            logging.log('Random Forest Parameter tuning  failed. Exited the get_best_params_for_random_forest method of the Model_Finder class')
+            logging.info('Random Forest Parameter tuning  failed. Exited the get_best_params_for_random_forest method of the Model_Finder class')
             raise CustomException(e, sys)
 
     def get_best_params_for_xgboost(self,train_x,train_y):
@@ -78,7 +78,7 @@ class Model_Finder:
                                         Revisions: None
 
                                 """
-        logging.log('Entered the get_best_params_for_xgboost method of the Model_Finder class')
+        logging.info('Entered the get_best_params_for_xgboost method of the Model_Finder class')
         try:
             # initializing with different combination of parameters
             self.param_grid_xgboost = {
@@ -102,11 +102,11 @@ class Model_Finder:
             self.xgb = XGBClassifier(learning_rate=self.learning_rate, max_depth=self.max_depth, n_estimators=self.n_estimators)
             # training the mew model
             self.xgb.fit(train_x, train_y)
-            logging.log('XGBoost best params: ' + str(self.grid.best_params_) + '. Exited the get_best_params_for_xgboost method of the Model_Finder class')
+            logging.info('XGBoost best params: ' + str(self.grid.best_params_) + '. Exited the get_best_params_for_xgboost method of the Model_Finder class')
             return self.xgb
         except Exception as e:
-            logging.log('Exception occured in get_best_params_for_xgboost method of the Model_Finder class. Exception message:  ' + str(e))
-            logging.log('XGBoost Parameter tuning  failed. Exited the get_best_params_for_xgboost method of the Model_Finder class')
+            logging.info('Exception occured in get_best_params_for_xgboost method of the Model_Finder class. Exception message:  ' + str(e))
+            logging.info('XGBoost Parameter tuning  failed. Exited the get_best_params_for_xgboost method of the Model_Finder class')
             raise CustomException(e, sys)
 
 
@@ -122,7 +122,7 @@ class Model_Finder:
                                                 Revisions: None
 
                                         """
-        logging.log('Entered the get_best_model method of the Model_Finder class')
+        logging.info('Entered the get_best_model method of the Model_Finder class')
         # create best model for XGBoost
         try:
             self.xgboost= self.get_best_params_for_xgboost(train_x,train_y)
@@ -130,10 +130,10 @@ class Model_Finder:
 
             if len(test_y.unique()) == 1: #if there is only one label in y, then roc_auc_score returns error. We will use accuracy in that case
                 self.xgboost_score = accuracy_score(test_y, self.prediction_xgboost)
-                logging.log('Accuracy for XGBoost:' + str(self.xgboost_score))  # Log AUC
+                logging.info('Accuracy for XGBoost:' + str(self.xgboost_score))  # Log AUC
             else:
                 self.xgboost_score = roc_auc_score(test_y, self.prediction_xgboost) # AUC for XGBoost
-                logging.log('AUC for XGBoost:' + str(self.xgboost_score)) # Log AUC
+                logging.info('AUC for XGBoost:' + str(self.xgboost_score)) # Log AUC
 
             # create best model for Random Forest
             self.random_forest=self.get_best_params_for_random_forest(train_x,train_y)
@@ -141,10 +141,10 @@ class Model_Finder:
 
             if len(test_y.unique()) == 1:#if there is only one label in y, then roc_auc_score returns error. We will use accuracy in that case
                 self.random_forest_score = accuracy_score(test_y,self.prediction_random_forest)
-                logging.log('Accuracy for RF:' + str(self.random_forest_score))
+                logging.info('Accuracy for RF:' + str(self.random_forest_score))
             else:
                 self.random_forest_score = roc_auc_score(test_y, self.prediction_random_forest) # AUC for Random Forest
-                logging.log('AUC for RF:' + str(self.random_forest_score))
+                logging.info('AUC for RF:' + str(self.random_forest_score))
 
             #comparing the two models
             if(self.random_forest_score <  self.xgboost_score):
@@ -153,7 +153,7 @@ class Model_Finder:
                 return 'RandomForest',self.random_forest
 
         except Exception as e:
-            logging.log( 'Exception occured in get_best_model method of the Model_Finder class. Exception message:  ' + str(e))
-            logging.log('Model Selection Failed. Exited the get_best_model method of the Model_Finder class')
+            logging.info( 'Exception occured in get_best_model method of the Model_Finder class. Exception message:  ' + str(e))
+            logging.info('Model Selection Failed. Exited the get_best_model method of the Model_Finder class')
             raise CustomException(e, sys)
 

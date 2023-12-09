@@ -30,7 +30,7 @@ class File_Operation:
             Version: 1.0
             Revisions: None
 """
-        logging.log('Entered the save_model method of the File_Operation class')
+        logging.info('Entered the save_model method of the File_Operation class')
         try:
             path = os.path.join(self.model_directory,filename) #create seperate directory for each cluster
             if os.path.isdir(path): #remove previously existing models for each clusters
@@ -41,12 +41,12 @@ class File_Operation:
             with open(path +'/' + filename+'.sav',
                       'wb') as f:
                 pickle.dump(model, f) # save the model to file
-            logging.log('Model File '+filename+' saved. Exited the save_model method of the Model_Finder class')
+            logging.info('Model File '+filename+' saved. Exited the save_model method of the Model_Finder class')
 
             return 'success'
         except Exception as e:
-            logging.log('Exception occured in save_model method of the Model_Finder class. Exception message:  ' + str(e))
-            logging.log('Model File '+filename+' could not be saved. Exited the save_model method of the Model_Finder class')
+            logging.info('Exception occured in save_model method of the Model_Finder class. Exception message:  ' + str(e))
+            logging.info('Model File '+filename+' could not be saved. Exited the save_model method of the Model_Finder class')
             raise CustomException(e, sys)
 
     def load_model(self,filename):
@@ -60,15 +60,15 @@ class File_Operation:
                     Version: 1.0
                     Revisions: None
         """
-        logging.log('Entered the load_model method of the File_Operation class')
+        logging.info('Entered the load_model method of the File_Operation class')
         try:
             with open(self.model_directory + filename + '/' + filename + '.sav',
                       'rb') as f:
-                logging.log('Model File ' + filename + ' loaded. Exited the load_model method of the Model_Finder class')
+                logging.info('Model File ' + filename + ' loaded. Exited the load_model method of the Model_Finder class')
                 return pickle.load(f)
         except Exception as e:
-            logging.log('Exception occured in load_model method of the Model_Finder class. Exception message:  ' + str(e))
-            logging.log('Model File ' + filename + ' could not be saved. Exited the load_model method of the Model_Finder class')
+            logging.info('Exception occured in load_model method of the Model_Finder class. Exception message:  ' + str(e))
+            logging.info('Model File ' + filename + ' could not be saved. Exited the load_model method of the Model_Finder class')
             raise CustomException(e, sys)
 
     def find_correct_model_file(self,cluster_number):
@@ -82,7 +82,7 @@ class File_Operation:
                             Version: 1.0
                             Revisions: None
                 """
-        logging.log('Entered the find_correct_model_file method of the File_Operation class')
+        logging.info('Entered the find_correct_model_file method of the File_Operation class')
         try:
             self.cluster_number= cluster_number
             self.folder_name=self.model_directory
@@ -95,9 +95,9 @@ class File_Operation:
                 except:
                     continue
             self.model_name=self.model_name.split('.')[0]
-            logging.log('Exited the find_correct_model_file method of the Model_Finder class.')
+            logging.info('Exited the find_correct_model_file method of the Model_Finder class.')
             return self.model_name
         except Exception as e:
-            logging.log('Exception occured in find_correct_model_file method of the Model_Finder class. Exception message:  ' + str( e))
-            logging.log('Exited the find_correct_model_file method of the Model_Finder class with Failure')
+            logging.info('Exception occured in find_correct_model_file method of the Model_Finder class. Exception message:  ' + str( e))
+            logging.info('Exited the find_correct_model_file method of the Model_Finder class with Failure')
             raise CustomException(e, sys)

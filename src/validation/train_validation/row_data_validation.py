@@ -43,7 +43,7 @@ class data_validation():
                     NumberofColumns = dic['NumberofColumns']
 
                     message ="LengthOfDateStampInFile:: %s" %LengthOfDateStampInFile + "\t" + "LengthOfTimeStampInFile:: %s" % LengthOfTimeStampInFile +"\t " + "NumberofColumns:: %s" % NumberofColumns + "\n"
-                    logging.log(message)
+                    logging.info(message)
 
             except ValueError as e:
                 logging.info("ValueError:Value not found inside schema_training.json")
@@ -106,20 +106,20 @@ class data_validation():
                     if len(splitAtDot[1]) == LengthOfDateStampInFile:
                         if len(splitAtDot[2]) == LengthOfTimeStampInFile:
                             shutil.copy("Training_Batch_Files/" + filename, "Training_Raw_files_validated/Good_Raw")
-                            logging.log("Valid File name!! File moved to GoodRaw Folder")
+                            logging.info("Valid File name!! File moved to GoodRaw Folder")
 
                         else:
                             shutil.copy("Training_Batch_Files/" + filename, "Training_Raw_files_validated/Bad_Raw")
-                            logging.log("Invalid File Name!! File moved to Bad Raw Folder")
+                            logging.info("Invalid File Name!! File moved to Bad Raw Folder")
                     else:
                         shutil.copy("Training_Batch_Files/" + filename, "Training_Raw_files_validated/Bad_Raw")
-                        logging.log("Invalid File Name!! File moved to Bad Raw Folder")
+                        logging.info("Invalid File Name!! File moved to Bad Raw Folder")
                 else:
                     shutil.copy("Training_Batch_Files/" + filename, "Training_Raw_files_validated/Bad_Raw")
-                    logging.log("Invalid File Name!! File moved to Bad Raw Folder")
+                    logging.info("Invalid File Name!! File moved to Bad Raw Folder")
 
         except Exception as e:
-            logging.log("Error occured while validating FileName ")
+            logging.info("Error occured while validating FileName ")
             raise CustomException(e, sys)
 
 
@@ -148,7 +148,7 @@ class data_validation():
                     os.makedirs(path)
 
             except OSError as ex:
-                logging.log("Error while creating Directory ")
+                logging.info("Error while creating Directory ")
                 raise CustomException(ex, sys)
 
 
@@ -172,9 +172,9 @@ class data_validation():
             path = 'Training_Raw_files_validated/'
             if os.path.isdir(path + 'Bad_Raw/'):
                 shutil.rmtree(path + 'Bad_Raw/')
-                logging.log("BadRaw directory deleted before starting validation!!!")
+                logging.info("BadRaw directory deleted before starting validation!!!")
         except OSError as s:
-            logging.log("Error while Deleting Directory")
+            logging.info("Error while Deleting Directory")
             raise CustomException(s, sys)
 
     
@@ -201,9 +201,9 @@ class data_validation():
             #     shutil.rmtree(path + 'Bad_Raw/')
             if os.path.isdir(path + 'Good_Raw/'):
                 shutil.rmtree(path + 'Good_Raw/')
-                logging.log("GoodRaw directory deleted successfully!!!")
+                logging.info("GoodRaw directory deleted successfully!!!")
         except OSError as s:
-            logging.log("Error while Deleting Directory")
+            logging.info("Error while Deleting Directory")
             raise CustomException(s, sys)
         
     
@@ -224,18 +224,18 @@ class data_validation():
 
                       """
         try:
-            logging.log("Column Length Validation Started!!")
+            logging.info("Column Length Validation Started!!")
             for file in listdir('Training_Raw_files_validated/Good_Raw/'):
                 csv = pd.read_csv("Training_Raw_files_validated/Good_Raw/" + file)
                 if csv.shape[1] == NumberofColumns:
                     pass
                 else:
                     shutil.move("Training_Raw_files_validated/Good_Raw/" + file, "Training_Raw_files_validated/Bad_Raw")
-                    logging.log("Invalid Column Length for the file!! File moved to Bad Raw Folder")
-            logging.log("Column Length Validation Completed!!")
+                    logging.info("Invalid Column Length for the file!! File moved to Bad Raw Folder")
+            logging.info("Column Length Validation Completed!!")
         except OSError as e:
-            logging.log("Error Occured while moving the file")
+            logging.info("Error Occured while moving the file")
             raise CustomException(e, sys)
         except Exception as e:
-            logging.log("Error Occured")
+            logging.info("Error Occured")
             raise Exception(e, sys)

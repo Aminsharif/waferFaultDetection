@@ -31,16 +31,16 @@ class Preprocessor:
                 Revisions: None
 
         """
-        logging.log('Entered the remove_columns method of the Preprocessor class')
+        logging.info('Entered the remove_columns method of the Preprocessor class')
         self.data=data
         self.columns=columns
         try:
             self.useful_data=self.data.drop(labels=self.columns, axis=1) # drop the labels specified in the columns
-            logging.log('Column removal Successful.Exited the remove_columns method of the Preprocessor class')
+            logging.info('Column removal Successful.Exited the remove_columns method of the Preprocessor class')
             return self.useful_data
         except Exception as e:
-            logging.log('Exception occured in remove_columns method of the Preprocessor class. Exception message:  '+str(e))
-            logging.log('Column removal Unsuccessful. Exited the remove_columns method of the Preprocessor class')
+            logging.info('Exception occured in remove_columns method of the Preprocessor class. Exception message:  '+str(e))
+            logging.info('Column removal Unsuccessful. Exited the remove_columns method of the Preprocessor class')
             raise CustomException(e, sys)
 
     def separate_label_feature(self, data, label_column_name):
@@ -55,15 +55,15 @@ class Preprocessor:
                         Revisions: None
 
                 """
-        logging.log('Entered the separate_label_feature method of the Preprocessor class')
+        logging.info('Entered the separate_label_feature method of the Preprocessor class')
         try:
             self.X=data.drop(labels=label_column_name,axis=1) # drop the columns specified and separate the feature columns
             self.Y=data[label_column_name] # Filter the Label columns
-            logging.log('Label Separation Successful. Exited the separate_label_feature method of the Preprocessor class')
+            logging.info('Label Separation Successful. Exited the separate_label_feature method of the Preprocessor class')
             return self.X,self.Y
         except Exception as e:
-            logging.log('Exception occured in separate_label_feature method of the Preprocessor class. Exception message:  ' + str(e))
-            logging.log(self.file_object, 'Label Separation Unsuccessful. Exited the separate_label_feature method of the Preprocessor class')
+            logging.info('Exception occured in separate_label_feature method of the Preprocessor class. Exception message:  ' + str(e))
+            logging.info('Label Separation Unsuccessful. Exited the separate_label_feature method of the Preprocessor class')
             raise CustomException(e, sys)
 
     def is_null_present(self,data):
@@ -78,7 +78,7 @@ class Preprocessor:
                                 Revisions: None
 
                         """
-        logging.log('Entered the is_null_present method of the Preprocessor class')
+        logging.info('Entered the is_null_present method of the Preprocessor class')
         self.null_present = False
         try:
             self.null_counts=data.isna().sum() # check for the count of null values per column
@@ -91,11 +91,11 @@ class Preprocessor:
                 dataframe_with_null['columns'] = data.columns
                 dataframe_with_null['missing values count'] = np.asarray(data.isna().sum())
                 dataframe_with_null.to_csv('preprocessing_data/null_values.csv') # storing the null column information to file
-            logging.log('Finding missing values is a success.Data written to the null values file. Exited the is_null_present method of the Preprocessor class')
+            logging.info('Finding missing values is a success.Data written to the null values file. Exited the is_null_present method of the Preprocessor class')
             return self.null_present
         except Exception as e:
-            logging.log('Exception occured in is_null_present method of the Preprocessor class. Exception message:  ' + str(e))
-            logging.log('Finding missing values failed. Exited the is_null_present method of the Preprocessor class')
+            logging.info('Exception occured in is_null_present method of the Preprocessor class. Exception message:  ' + str(e))
+            logging.info('Finding missing values failed. Exited the is_null_present method of the Preprocessor class')
             raise Exception()
 
     def impute_missing_values(self, data):
@@ -109,18 +109,18 @@ class Preprocessor:
                                         Version: 1.0
                                         Revisions: None
                      """
-        logging.log('Entered the impute_missing_values method of the Preprocessor class')
+        logging.info('Entered the impute_missing_values method of the Preprocessor class')
         self.data= data
         try:
             imputer=KNNImputer(n_neighbors=3, weights='uniform',missing_values=np.nan)
             self.new_array=imputer.fit_transform(self.data) # impute the missing values
             # convert the nd-array returned in the step above to a Dataframe
             self.new_data=pd.DataFrame(data=self.new_array, columns=self.data.columns)
-            logging.log('Imputing missing values Successful. Exited the impute_missing_values method of the Preprocessor class')
+            logging.info('Imputing missing values Successful. Exited the impute_missing_values method of the Preprocessor class')
             return self.new_data
         except Exception as e:
-            logging.log('Exception occured in impute_missing_values method of the Preprocessor class. Exception message:  ' + str(e))
-            logging.log('Imputing missing values failed. Exited the impute_missing_values method of the Preprocessor class')
+            logging.info('Exception occured in impute_missing_values method of the Preprocessor class. Exception message:  ' + str(e))
+            logging.info('Imputing missing values failed. Exited the impute_missing_values method of the Preprocessor class')
             raise CustomException(e, sys)
 
     def get_columns_with_zero_std_deviation(self,data):
@@ -134,7 +134,7 @@ class Preprocessor:
                                                 Version: 1.0
                                                 Revisions: None
                              """
-        logging.log('Entered the get_columns_with_zero_std_deviation method of the Preprocessor class')
+        logging.info('Entered the get_columns_with_zero_std_deviation method of the Preprocessor class')
         self.columns=data.columns
         self.data_n = data.describe()
         self.col_to_drop=[]
@@ -142,10 +142,10 @@ class Preprocessor:
             for x in self.columns:
                 if (self.data_n[x]['std'] == 0): # check if standard deviation is zero
                     self.col_to_drop.append(x)  # prepare the list of columns with standard deviation zero
-            logging.log('Column search for Standard Deviation of Zero Successful. Exited the get_columns_with_zero_std_deviation method of the Preprocessor class')
+            logging.info('Column search for Standard Deviation of Zero Successful. Exited the get_columns_with_zero_std_deviation method of the Preprocessor class')
             return self.col_to_drop
 
         except Exception as e:
-            logging.log('Exception occured in get_columns_with_zero_std_deviation method of the Preprocessor class. Exception message:  ' + str(e))
-            logging.log('Column search for Standard Deviation of Zero Failed. Exited the get_columns_with_zero_std_deviation method of the Preprocessor class')
+            logging.info('Exception occured in get_columns_with_zero_std_deviation method of the Preprocessor class. Exception message:  ' + str(e))
+            logging.info('Column search for Standard Deviation of Zero Failed. Exited the get_columns_with_zero_std_deviation method of the Preprocessor class')
             raise CustomException(e, sys)
