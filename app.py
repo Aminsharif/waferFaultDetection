@@ -35,7 +35,7 @@ def trainRouteClient():
             tp = utils.train_val()
 
             train_valObj = utils.train_val(path) #object initialization
-            train_valObj.train    #calling the training_validation function
+            train_valObj.validation(path)    #calling the training_validation function
 
 
             trainModelObj = trainModel() #object initialization
