@@ -239,3 +239,47 @@ class data_validation():
         except Exception as e:
             logging.info("Error Occured")
             raise Exception(e, sys)
+        
+
+    def moveBadFilesToArchiveBad(self):
+
+        """
+            Method Name: moveBadFilesToArchiveBad
+            Description: This method deletes the directory made  to store the Bad Data
+            after moving the data in an archive folder. We archive the bad
+            files to send them back to the client for invalid data issue.
+            Output: None
+            On Failure: OSError
+
+            Written By: Amin Sharif
+            Version: 1.0
+            Revisions: None
+
+        """
+        now = datetime.now()
+        date = now.date()
+        time = now.strftime("%H%M%S")
+        try:
+            source = 'Training_Raw_files_validated/Bad_Raw/'
+            if os.path.isdir(source):
+                path = "TrainingArchiveBadData"
+                if not os.path.isdir(path):
+                    os.makedirs(path)
+                dest = 'TrainingArchiveBadData/BadData_' + str(date)+"_"+str(time)
+                if not os.path.isdir(dest):
+                    os.makedirs(dest)
+                files = os.listdir(source)
+                for f in files:
+                    if f not in os.listdir(dest):
+                        shutil.move(source + f, dest)
+                logging.info("Bad files moved to archive")
+                path = 'Training_Raw_files_validated/'
+                if os.path.isdir(path + 'Bad_Raw/'):
+                    shutil.rmtree(path + 'Bad_Raw/')
+                logging.info("Bad Raw Data Folder Deleted successfully!!")
+                
+        except Exception as e:
+            logging.info("Error while moving bad files to archive:: %s" % e)
+            raise CustomException(e, sys)
+
+
